@@ -10,7 +10,7 @@ library(lidR)
 library(future) # for parallel processing
 
 ## create a folders to save outputs 
-dir = paste0("G:/MS1/lidR_sample")
+dir = paste0("Z:/file_path")
 
 dir.create(paste0(dir,"/output"))
 dir.create(paste0(dir,"/output/GROUND")) # ground classification
@@ -18,7 +18,7 @@ dir.create(paste0(dir,"/output/NORM")) # normalized point cloud
 dir.create(paste0(dir,"/output/RASTER")) # rasterized DEM & CHM
 
 ## read in the LAS Catalog 
-LCT = readLAScatalog(folder = paste0(dir, "/D17a_laz"))
+LCT = readLAScatalog(folder = paste0(dir, "/folder_of_laz_tiles"))
 
 #### GROUND CLASSIFICATION ####
 # classify ground/canopy from the filtered point cloud
@@ -26,9 +26,9 @@ LCT = readLAScatalog(folder = paste0(dir, "/D17a_laz"))
 
 ## options for reading in the LAS Catalog
 opt_chunk_buffer(LCT) = 10 # buffer each tile 10m
-opt_laz_compression(LCT) = FALSE # write output as .las 
+opt_laz_compression(LCT) = TRUE # write output as .laz 
 # Point cloud thinning to speed things up by taking a random point within each 0.1m voxel
-# consider using higher/lower resolution voxel depending on point cloud density
+# consider using higher/lower resolution voxel depending on point cloud density and computing power
 opt_filter(LCT) = "-thin_with_voxel 0.1" 
 # output naming convention will keep the tiling system
 opt_output_files(LCT) = paste0(dir, "\\output\\GROUND\\{*}_GROUND") 
